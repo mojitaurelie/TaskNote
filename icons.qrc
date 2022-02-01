@@ -1,0 +1,11 @@
+<RCC>
+    <qresource prefix="/icon">
+        <file>resources/outline_add_circle_outline_black_18dp.png</file>
+        <file>resources/outline_delete_forever_black_18dp.png</file>
+        <file>resources/outline_save_black_18dp.png</file>
+        <file>resources/outline_help_outline_black_18dp.png</file>
+    </qresource>
+    <qresource prefix="/logo">
+        <file>resources/logo.png</file>
+    </qresource>
+</RCC>
