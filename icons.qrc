@@ -1,9 +1,12 @@
 <RCC>
     <qresource prefix="/icon">
-        <file>resources/outline_add_circle_outline_black_18dp.png</file>
-        <file>resources/outline_delete_forever_black_18dp.png</file>
-        <file>resources/outline_save_black_18dp.png</file>
-        <file>resources/outline_help_outline_black_18dp.png</file>
+        <file>resources/outline_add_circle_outline_black_48dp.png</file>
+        <file>resources/outline_delete_forever_black_48dp.png</file>
+        <file>resources/outline_help_outline_black_48dp.png</file>
+        <file>resources/outline_lock_black_48dp.png</file>
+        <file>resources/outline_save_black_48dp.png</file>
+        <file>resources/outline_shield_black_48dp.png</file>
+        <file>resources/outline_lock_open_black_48dp.png</file>
     </qresource>
     <qresource prefix="/logo">
         <file>resources/logo.png</file>

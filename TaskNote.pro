@@ -19,7 +19,7 @@ win32 {
         QMAKE_CXXFLAGS_RELEASE += -favor:INTEL64
     }
     RC_ICONS = icon.ico
-    VERSION = 1.1.0.0
+    VERSION = 1.2.0.0
     QMAKE_TARGET_COMPANY = "Aurelie Delhaie"
     QMAKE_TARGET_PRODUCT = "TaskNote"
     QMAKE_TARGET_DESCRIPTION = "TaskNote"
@@ -37,14 +37,18 @@ macx {
         message("CPU Architecture : aarch64")
         QMAKE_CXXFLAGS_RELEASE += -mcpu=apple-a14
     }
-    VERSION = 1.1.0
+    VERSION = 1.2.0
 }
 
 linux-g++* {
     message("Build for Linux")
+
+    LIBS += -L/usr/lib/crypto++ -lcrypto++
+    INCS += -I/usr/include/crypto++
+
     QMAKE_CXXFLAGS_RELEASE *= -O3
     QMAKE_CXXFLAGS_RELEASE += -march=skylake
-    VERSION = 1.1.0
+    VERSION = 1.2.0
 }
 
 # You can make your code fail to compile if it uses deprecated APIs.

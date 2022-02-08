@@ -14,6 +14,7 @@ MainWindow::MainWindow(QWidget *parent)
     connect(ui->noteList, &QListWidget::currentRowChanged, this, &MainWindow::selectionChanged);
     connect(ui->titleEdit, &QLineEdit::textChanged, this, &MainWindow::titleChanged);
     connect(ui->contentEdit, &QPlainTextEdit::textChanged, this, &MainWindow::contentChanged);
+    connect(ui->actionEncrypt, &QAction::triggered, this, &MainWindow::encryptNote);
     const QFont fixedFont = QFontDatabase::systemFont(QFontDatabase::FixedFont);
     ui->contentEdit->setFont(fixedFont);
     this->savemng = new SaveManager();
@@ -55,8 +56,13 @@ void MainWindow::selectionChanged(int i)
     ui->titleEdit->setDisabled(false);
     ui->contentEdit->setDisabled(false);
     ui->titleEdit->setText(n->getTitle());
-    ui->contentEdit->setPlainText(n->getContent());
-    ui->markdownViewer->setMarkdown(n->getContent());
+    if (n->isEncrypted())
+    {
+      ui->contentEdit->setPlainText(n->getEncryptedContent("azertyuiop"));
+    } else {
+      ui->contentEdit->setPlainText(n->getContent());
+    }
+    ui->markdownViewer->setMarkdown(ui->contentEdit->toPlainText());
 }
 
 void MainWindow::removeSelected()
@@ -71,6 +77,7 @@ void MainWindow::removeSelected()
 
 void MainWindow::save()
 {
+    ui->actionSave->setDisabled(true);
     if (this->currentIndex > -1)
     {
         Note *n = this->savemng->getNoteByIndex(this->currentIndex);
@@ -89,6 +96,7 @@ void MainWindow::titleChanged()
         n->setTitle(ui->titleEdit->text());
         ui->noteList->item(this->currentIndex)->setText(ui->titleEdit->text());
     }
+    ui->actionSave->setDisabled(false);
     timer->start(1000);
 }
 
@@ -97,6 +105,16 @@ void MainWindow::showAboutBox()
     AboutDialog dialog;
     dialog.setModal(true);
     dialog.exec();
+}
+
+void MainWindow::encryptNote()
+{
+  if (this->currentIndex > -1)
+  {
+      Note *n = this->savemng->getNoteByIndex(this->currentIndex);
+      n->encrypt("azertyuiop");
+      savemng->flushSave();
+  }
 }
 
 void MainWindow::contentChanged()
@@ -108,6 +126,7 @@ void MainWindow::contentChanged()
         n->setContent(ui->contentEdit->toPlainText());
         ui->markdownViewer->setMarkdown(ui->contentEdit->toPlainText());
     }
+    ui->actionSave->setDisabled(false);
     timer->start(1000);
 }
 

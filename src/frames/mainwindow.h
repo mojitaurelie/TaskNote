@@ -30,6 +30,7 @@ private slots:
     void contentChanged();
     void titleChanged();
     void showAboutBox();
+    void encryptNote();
 
 private:
     Ui::MainWindow *ui;
