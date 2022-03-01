@@ -8,6 +8,10 @@ SaveManager::SaveManager()
 SaveManager::~SaveManager()
 {
     flushSave();
+    foreach (Note *n, notes)
+    {
+        delete n;
+    }
 }
 
 void SaveManager::flushSave()
