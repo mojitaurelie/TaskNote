@@ -11,6 +11,7 @@
 #include <QUuid>
 #include <QMessageBox>
 
+#ifdef __SECURED
 #include <crypto++/modes.h>
 #include <crypto++/aes.h>
 #include <crypto++/filters.h>
@@ -20,6 +21,7 @@
 #include <crypto++/osrng.h>
 #include <crypto++/gcm.h>
 #include <crypto++/rijndael.h>
+#endif
 
 class Note
 {
@@ -32,15 +34,19 @@ public:
     QString getUuid();
     QString getTitle();
     QString getContent();
+
+    #ifdef __SECURED
     QString getEncryptedContent(QString passwd);
     bool isEncrypted();
+    #endif
 
     void setTitle(QString value);
     void setContent(QString value);
+
+    #ifdef __SECURED
     bool setEncryptedContent(QString value, QString passwd);
-
     void encrypt(QString password);
-
+    #endif
 private:
     QString uuid;
     QString title;

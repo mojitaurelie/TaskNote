@@ -6,7 +6,8 @@ AboutDialog::AboutDialog(QWidget *parent) :
     ui(new Ui::AboutDialog)
 {
     ui->setupUi(this);
-    ui->appNameLabel->setText(QString("TaskNote (%1)").arg(QSysInfo::currentCpuArchitecture()));
+    ui->appNameLabel->setText(QString("%1 (%2)").arg(APP_NAME, APP_ARCH));
+    ui->versionLabel->setText(QString("Version %1").arg(APP_VERSION));
 }
 
 AboutDialog::~AboutDialog()

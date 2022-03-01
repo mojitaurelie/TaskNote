@@ -222,6 +222,9 @@
    </property>
   </action>
   <action name="actionEncrypt">
+   <property name="enabled">
+    <bool>false</bool>
+   </property>
    <property name="icon">
     <iconset resource="../../icons.qrc">
      <normaloff>:/icon/resources/outline_shield_black_48dp.png</normaloff>:/icon/resources/outline_shield_black_48dp.png</iconset>

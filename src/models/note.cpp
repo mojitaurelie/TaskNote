@@ -12,7 +12,9 @@ QJsonObject Note::toJson()
     o["uuid"] = this->uuid;
     o["title"] = this->title;
     o["content"] = this->content;
+    #ifdef __SECURED
     o["encrypted"] = this->encrypted;
+    #endif
     return o;
 }
 
@@ -44,7 +46,7 @@ QString Note::getContent()
     }
     return "";
 }
-
+#ifdef __SECURED
 QString Note::getEncryptedContent(QString passwd)
 {
     if (this->encrypted)
@@ -80,7 +82,7 @@ bool Note::isEncrypted()
 {
   return this->encrypted;
 }
-
+#endif
 void Note::setTitle(QString value)
 {
     this->title = value;
@@ -92,7 +94,7 @@ void Note::setContent(QString value)
     this->content = value;
   }
 }
-
+#ifdef __SECURED
 // TODO encrypt avec le mot de passe
 bool Note::setEncryptedContent(QString value, QString passwd)
 {
@@ -141,4 +143,4 @@ void Note::encrypt(QString password)
     }
   }
 }
-
+#endif

@@ -14,7 +14,9 @@ MainWindow::MainWindow(QWidget *parent)
     connect(ui->noteList, &QListWidget::currentRowChanged, this, &MainWindow::selectionChanged);
     connect(ui->titleEdit, &QLineEdit::textChanged, this, &MainWindow::titleChanged);
     connect(ui->contentEdit, &QPlainTextEdit::textChanged, this, &MainWindow::contentChanged);
+    #ifdef __SECURED
     connect(ui->actionEncrypt, &QAction::triggered, this, &MainWindow::encryptNote);
+    #endif
     const QFont fixedFont = QFontDatabase::systemFont(QFontDatabase::FixedFont);
     ui->contentEdit->setFont(fixedFont);
     this->savemng = new SaveManager();
@@ -56,12 +58,16 @@ void MainWindow::selectionChanged(int i)
     ui->titleEdit->setDisabled(false);
     ui->contentEdit->setDisabled(false);
     ui->titleEdit->setText(n->getTitle());
+#ifdef __SECURED
     if (n->isEncrypted())
     {
       ui->contentEdit->setPlainText(n->getEncryptedContent("azertyuiop"));
     } else {
       ui->contentEdit->setPlainText(n->getContent());
     }
+#else
+    ui->contentEdit->setPlainText(n->getContent());
+#endif
     ui->markdownViewer->setMarkdown(ui->contentEdit->toPlainText());
 }
 
@@ -107,6 +113,7 @@ void MainWindow::showAboutBox()
     dialog.exec();
 }
 
+#ifdef __SECURED
 void MainWindow::encryptNote()
 {
   if (this->currentIndex > -1)
@@ -116,6 +123,7 @@ void MainWindow::encryptNote()
       savemng->flushSave();
   }
 }
+#endif
 
 void MainWindow::contentChanged()
 {
