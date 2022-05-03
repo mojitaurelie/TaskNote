@@ -4,8 +4,8 @@ greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
 CONFIG += c++17
 
-win32:VERSION = 1.1.1.0 # major.minor.patch.build
-else:VERSION = 1.1.1    # major.minor.patch
+win32:VERSION = 1.1.2.0 # major.minor.patch.build
+else:VERSION = 1.1.2    # major.minor.patch
 
 DEFINES += APP_VERSION=\"\\\"$${VERSION}\\\"\"
 DEFINES += APP_NAME=\"\\\"TaskNote\\\"\"
@@ -41,22 +41,14 @@ macx {
     QMAKE_CXXFLAGS_RELEASE -= -O1
     QMAKE_CXXFLAGS_RELEASE -= -O2
     QMAKE_CXXFLAGS_RELEASE *= -O3
+    QMAKE_APPLE_DEVICE_ARCHS = x86_64 arm64
     DEFINES += APP_OS=\"\\\"macOS\\\"\"
     DEFINES += APP_OS_VERSION=\"\\\"$$system(uname -r)\\\"\"
-    equals(QMAKE_APPLE_DEVICE_ARCHS, arm64) {
-        message("CPU Architecture : aarch64")
-        DEFINES += APP_ARCH=\"\\\"aarch64\\\"\"
-        QMAKE_CXXFLAGS_RELEASE += -mcpu=apple-a14
-    }
+    DEFINES += APP_ARCH=\"\\\"universal\\\"\"
 }
 
 linux-g++* {
     message("Build for Linux")
-
-    #LIBS += -L/usr/lib/crypto++ -lcrypto++
-    #INCS += -I/usr/include/crypto++
-
-    #DEFINES += __SECURED=1
     DEFINES += APP_OS=\"\\\"$$system(cat /etc/issue | cut -d\' \' -f1)\\\"\"
     DEFINES += APP_OS_VERSION=\"\\\"$$system(uname -r)\\\"\"
     DEFINES += APP_ARCH=\"\\\"amd64\\\"\"

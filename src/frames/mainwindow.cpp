@@ -14,9 +14,6 @@ MainWindow::MainWindow(QWidget *parent)
     connect(ui->noteList, &QListWidget::currentRowChanged, this, &MainWindow::selectionChanged);
     connect(ui->titleEdit, &QLineEdit::textChanged, this, &MainWindow::titleChanged);
     connect(ui->contentEdit, &QPlainTextEdit::textChanged, this, &MainWindow::contentChanged);
-    #ifdef __SECURED
-    connect(ui->actionEncrypt, &QAction::triggered, this, &MainWindow::encryptNote);
-    #endif
     const QFont fixedFont = QFontDatabase::systemFont(QFontDatabase::FixedFont);
     ui->contentEdit->setFont(fixedFont);
     this->savemng = new SaveManager();
@@ -54,21 +51,19 @@ void MainWindow::selectionChanged(int i)
         clearAndDisableFields();
         return;
     }
-    ui->actionRemove->setDisabled(false);
+
+    ui->contentEdit->blockSignals(true);
+    ui->titleEdit->blockSignals(true);
+
     ui->titleEdit->setDisabled(false);
     ui->contentEdit->setDisabled(false);
+    ui->actionRemove->setDisabled(false);
     ui->titleEdit->setText(n->getTitle());
-#ifdef __SECURED
-    if (n->isEncrypted())
-    {
-      ui->contentEdit->setPlainText(n->getEncryptedContent("azertyuiop"));
-    } else {
-      ui->contentEdit->setPlainText(n->getContent());
-    }
-#else
     ui->contentEdit->setPlainText(n->getContent());
-#endif
     ui->markdownViewer->setMarkdown(ui->contentEdit->toPlainText());
+
+    ui->contentEdit->blockSignals(false);
+    ui->titleEdit->blockSignals(false);
 }
 
 void MainWindow::removeSelected()
@@ -113,18 +108,6 @@ void MainWindow::showAboutBox()
     dialog.exec();
 }
 
-#ifdef __SECURED
-void MainWindow::encryptNote()
-{
-  if (this->currentIndex > -1)
-  {
-      Note *n = this->savemng->getNoteByIndex(this->currentIndex);
-      n->encrypt("azertyuiop");
-      savemng->flushSave();
-  }
-}
-#endif
-
 void MainWindow::contentChanged()
 {
     timer->stop();
@@ -149,6 +132,9 @@ void MainWindow::updateListView()
 
 void MainWindow::clearAndDisableFields()
 {
+    ui->contentEdit->blockSignals(true);
+    ui->titleEdit->blockSignals(true);
+
     this->currentIndex = -1;
     ui->actionRemove->setDisabled(true);
     ui->titleEdit->setDisabled(true);
@@ -156,5 +142,8 @@ void MainWindow::clearAndDisableFields()
     ui->titleEdit->clear();
     ui->contentEdit->clear();
     ui->markdownViewer->clear();
+
+    ui->contentEdit->blockSignals(false);
+    ui->titleEdit->blockSignals(false);
 }
 
